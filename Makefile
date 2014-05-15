@@ -1,0 +1,2 @@
+all:
+	xelatex model.tex
