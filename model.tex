@@ -16,7 +16,7 @@
 
 
 \newcommand{\terms}{T_{K,F_n}}
-\newcommand{\universe}{(2^{m})^\gs}
+\newcommand{\universe}{(2^{m^2})^\gs}
 \newcommand{\coproduct}{K \oplus F_n / D}
 
 \newcommand{\todo}[1]{\textbf{TODO:~#1}}
@@ -70,7 +70,21 @@
 
 \subsection*{Goals}
 
-Want to find an $F X = (2^{2n})^\atoms \times X^{\atoms\actions}$
+Want to find a functor $F X = (2^{2n})^\atoms \times X^{\atoms\actions}$ that makes the following diagram commute.
+%% is F X correct, or typo?
+\begin{center}
+  \begin{tikzpicture}
+    \node (1) {$\terms$};
+    \node[right of=1,xshift=2cm] (2) {$U$};
+    \node[below of=1,yshift=-2cm] (3) {$F~T_{K,F_n}$};
+    \node[right of=3,xshift=2cm] (4) {$F~U$};
+
+    \draw[dashed,->] (1) -- node[above] {$u$} (2);
+    \draw[->] (1) -- node[right] {$\langle \varepsilon^T,~\delta^T\rangle$} (3);
+    \draw[->] (2) -- node[right] {$\langle \varepsilon^U,\delta^U \rangle$} (4);
+    \draw[->] (3) -- node[above] {$F~u$} (4);
+  \end{tikzpicture}
+\end{center}
 
 Need to prove two lemmas:
 
@@ -89,15 +103,15 @@ Need to prove two lemmas:
 
 The result of these lemmas is the corollary:
 \begin{corollary}
-  If $R \subseteq \terms \times \terms$ is an F-bisimulation and $(p,q) \in R$ then KAT+B! $\vDash p = q$
+  If $R \subseteq \terms \times \terms$ is an F-bisimulation and $(p,q) \in R$ then $\mbox{KAT+B!}\vDash p = q$
 \end{corollary}
 
 
 \subsection*{h}
 The arrow $h : \terms \rightarrow \coproduct$ taking terms from the KAT+B! to matrices representing the commutative coproduct of terms in the KAT and terms in the B! (modulo commutativity conditions) is defined in the original KAT+B! paper as:
 \begin{align*}
-  h(p)_{\alpha\beta} &= p \hspace{1cm} \mbox{if $\alpha=\beta$}
-\\h(0)_{\alpha\beta} &= 0
+  h(p)_{\alpha\beta} &= [p \mbox{if $\alpha=\beta$}]
+\\h(0)_{\alpha\beta} &= [0]
 \\h(1)_{\alpha\beta} &= [\alpha = \beta]
 \\h(t?)_{\alpha\beta} &= [\alpha = \beta \le t]
 \\h(t!)_{\alpha\beta} &= [\beta = \alpha[t]]
@@ -109,11 +123,11 @@ We define the arrow $I : \coproduct \rightarrow U$ as follows, where $U = (2^{\a
 \begin{itemize}
 \item The commutative coproduct $\coproduct$ is isomorphic to the family of matrices $\mat{\atoms,K}$.
 \item There is an injection $\iota$ from any KAT into the language model of KATs: $\iota : KAT \hookrightarrow 2^\gs$.
-\item Applying $\iota$ to the entries in the matrices $\mat{\atoms,K}$, gives an injection $\mat{\atoms,K} \hookrightarrow \mat{\atoms,2^\gs}$.
+\item Applying $\iota$ pointwise to $\mat{\atoms,K}$ gives an injection $\mat{\atoms,K} \hookrightarrow \mat{\atoms,2^\gs}$.
 \item By currying, $\mat{\atoms,2^\gs} = (2^{\gs})^{\atoms \times \atoms} = (2^{\atoms \times \atoms})^\gs$.
 \end{itemize}
 
-We abbreviate $\atoms \times \atoms$ as $m$, we arrive at a final representation for the universe $U = \universe$.
+Alternatively, let $m$ be the size of $\atoms$ and represent $U = \universe$.
 
 \subsection*{$I \circ h$}
 
@@ -122,11 +136,14 @@ Let $\hat{\alpha}$ represent an atom of the KAT (to avoid conflicts with the ind
 \begin{align*}
   I &: \mat{2^n,K} \hookrightarrow \gs \rightarrow 2^n \rightarrow 2
 \\
-\\I(E(p))(w)_{\alpha\beta} &= [ w \in L(p) ] \hspace{1cm} \mbox{if $\alpha = \beta$}
+\\I(h(p))(w)_{\alpha\beta} &= [ w \in L(p) ] \hspace{1cm} \mbox{if $\alpha = \beta$}
 \\I(h(t?))(\hat{\alpha})_{\alpha\beta} &= [ \alpha = \beta \le t ]
-\\I(h(t?))(\hat{\alpha}pw)_{\alpha\beta} &= 0
+\\I(h(t?))(\hat{\alpha}pw)_{\alpha\beta} &= [0]
+%% Why are atoms ignored?
 \\I(A)(w)_{\alpha\beta} &= [ w \in L(A_{\alpha\beta}) ]
 \end{align*}
+
+Where $L(p)$ is the language of $p$.
 
 %% \subsubsection*{Bisimilarity}
 
@@ -135,22 +152,5 @@ Let $\hat{\alpha}$ represent an atom of the KAT (to avoid conflicts with the ind
 %% \item $\varepsilon(x) = \varepsilon(y)$
 %% \item $\forall \alpha \in \atoms,~ \rho \in \actions~.~(\delta_{\alpha,\rho}(x), \delta_{\alpha,\rho}(y)) \in R$
 %% \end{enumerate}
-
-\subsubsection*{Etc}
-
-%% This diagram is important for the lemmas
-\begin{center}
-  \begin{tikzpicture}
-    \node (1) {$\terms$};
-    \node[right of=1,xshift=2cm] (2) {$U$};
-    \node[below of=1,yshift=-2cm] (3) {$F~T_{K,F_n}$};
-    \node[right of=3,xshift=2cm] (4) {$F~U$};
-
-    \draw[dashed,->] (1) -- node[above] {$u$} (2);
-    \draw[->] (1) -- node[right] {$\langle \varepsilon^T,~\delta^T\rangle$} (3);
-    \draw[->] (2) -- node[right] {$\langle \varepsilon^U,\delta^U \rangle$} (4);
-    \draw[->] (3) -- node[above] {$F~u$} (4);
-  \end{tikzpicture}
-\end{center}
 
 \end{document}
