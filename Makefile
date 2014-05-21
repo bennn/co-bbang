@@ -1,2 +1,2 @@
 all:
-	xelatex model.tex
+	xelatex weird-science.tex
